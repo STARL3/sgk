@@ -9,6 +9,7 @@
 
 import studentsClassroom from './students-classroom.jpg';
 import image1 from './image1.png';
+import image2 from './image2.jpg';
 
 export const carouselImages = [
   {
@@ -22,7 +23,7 @@ export const carouselImages = [
     caption: 'Beautiful Modern Campus'
   },
   {
-    url: studentsClassroom, // Using the same image for now, replace with actual image
+    url: image2,
     alt: 'Students studying',
     caption: 'Collaborative Learning Environment'
   },
