@@ -7,24 +7,27 @@
 // import studentsStudying from './students-studying.jpg';
 // import scienceLab from './science-lab.jpg';
 
+import studentsClassroom from './students-classroom.jpg';
+import image1 from './image1.png';
+
 export const carouselImages = [
   {
-    url: '/src/assets/images/students-classroom.jpg', // Replace with actual import
+    url: studentsClassroom,
     alt: 'Students in classroom',
     caption: 'Excellence in Academic Learning'
   },
   {
-    url: '/src/assets/images/image1.png', // Replace with actual import
+    url: image1,
     alt: 'School campus',
     caption: 'Beautiful Modern Campus'
   },
   {
-    url: '/src/assets/images/students-studying.jpg', // Replace with actual import
+    url: studentsClassroom, // Using the same image for now, replace with actual image
     alt: 'Students studying',
     caption: 'Collaborative Learning Environment'
   },
   {
-    url: '/src/assets/images/science-lab.jpg', // Replace with actual import
+    url: image1, // Using the same image for now, replace with actual image
     alt: 'Science laboratory',
     caption: 'State-of-the-Art Facilities'
   }
