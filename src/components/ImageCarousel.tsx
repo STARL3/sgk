@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { carouselImages } from '../assets/images';
 
 interface CarouselImage {
   url: string;
@@ -8,47 +9,26 @@ interface CarouselImage {
 }
 
 const ImageCarousel = () => {
-  const images: CarouselImage[] = [
-    {
-      url: 'https://images.pexels.com/photos/1370296/pexels-photo-1370296.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      alt: 'Students in classroom',
-      caption: 'Excellence in Academic Learning'
-    },
-    {
-      url: 'https://images.pexels.com/photos/8613089/pexels-photo-8613089.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      alt: 'School campus',
-      caption: 'Beautiful Modern Campus'
-    },
-    {
-      url: 'https://images.pexels.com/photos/8535168/pexels-photo-8535168.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      alt: 'Students studying',
-      caption: 'Collaborative Learning Environment'
-    },
-    {
-      url: 'https://images.pexels.com/photos/8465804/pexels-photo-8465804.jpeg?auto=compress&cs=tinysrgb&w=1200',
-      alt: 'Science laboratory',
-      caption: 'State-of-the-Art Facilities'
-    }
-  ];
+  const images: CarouselImage[] = carouselImages;
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+      setCurrentIndex((prevIndex: number) => (prevIndex + 1) % images.length);
     }, 5000);
 
     return () => clearInterval(interval);
   }, [images.length]);
 
   const goToPrevious = () => {
-    setCurrentIndex((prevIndex) => 
+    setCurrentIndex((prevIndex: number) => 
       prevIndex === 0 ? images.length - 1 : prevIndex - 1
     );
   };
 
   const goToNext = () => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex: number) => (prevIndex + 1) % images.length);
   };
 
   return (
