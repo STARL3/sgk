@@ -29,13 +29,13 @@ export const carouselImages: CarouselItem[] = [
   {
     url: i2,
     alt: 'Image 2',
-    caption: 'Beautiful Modern Campus',
+    caption: 'Dynamic Learning Environment',
     type: 'image'
   },
   {
     url: vid1,
     alt: 'School activities video',
-    caption: 'Dynamic Learning Environment',
+    caption: 'Beautiful Modern Campus',
     type: 'video'
   },
   {
