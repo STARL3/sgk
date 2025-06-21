@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Send, CheckCircle, AlertCircle } from 'lucide-react';
-import { sendInquiryEmail, sendConfirmationEmail } from '../services/emailService';
+import { sendInquiryEmail } from '../services/emailService';
 
 interface FormData {
   name: string;
@@ -64,16 +64,13 @@ const InquiryForm = () => {
     if (validateForm()) {
       setIsSubmitting(true);
       setSubmitError('');
-      
+
       try {
         // Send inquiry email to school
         await sendInquiryEmail(formData);
-        
-        // Send confirmation email to user
-        await sendConfirmationEmail(formData);
-        
+
         setIsSubmitted(true);
-        
+
         // Reset form after 3 seconds
         setTimeout(() => {
           setIsSubmitted(false);
@@ -100,7 +97,7 @@ const InquiryForm = () => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[name as keyof FormData]) {
       setErrors(prev => ({
@@ -118,9 +115,6 @@ const InquiryForm = () => {
         <p className="text-gray-600">
           We've received your inquiry and will get back to you within 24 hours.
         </p>
-        <p className="text-sm text-gray-500 mt-2">
-          A confirmation email has been sent to {formData.email}
-        </p>
       </div>
     );
   }
@@ -128,14 +122,14 @@ const InquiryForm = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-8">
       <h3 className="text-2xl font-bold text-gray-900 mb-6">Admission Inquiry</h3>
-      
+
       {submitError && (
         <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
           <AlertCircle className="h-5 w-5 text-red-500" />
           <p className="text-red-700">{submitError}</p>
         </div>
       )}
-      
+
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Name Field */}
@@ -149,9 +143,8 @@ const InquiryForm = () => {
               name="name"
               value={formData.name}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.name ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.name ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="Enter student's full name"
             />
             {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name}</p>}
@@ -168,9 +161,8 @@ const InquiryForm = () => {
               name="email"
               value={formData.email}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.email ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.email ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="your.email@example.com"
             />
             {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email}</p>}
@@ -187,9 +179,8 @@ const InquiryForm = () => {
               name="phone"
               value={formData.phone}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.phone ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.phone ? 'border-red-500' : 'border-gray-300'
+                }`}
               placeholder="9876543210"
             />
             {errors.phone && <p className="mt-1 text-sm text-red-600">{errors.phone}</p>}
@@ -205,9 +196,8 @@ const InquiryForm = () => {
               name="admissionClass"
               value={formData.admissionClass}
               onChange={handleInputChange}
-              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${
-                errors.admissionClass ? 'border-red-500' : 'border-gray-300'
-              }`}
+              className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 ${errors.admissionClass ? 'border-red-500' : 'border-gray-300'
+                }`}
             >
               <option value="">Select a class</option>
               {classOptions.map((className) => (
@@ -240,11 +230,10 @@ const InquiryForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className={`w-full font-bold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105 ${
-            isSubmitting 
-              ? 'bg-gray-400 cursor-not-allowed' 
-              : 'bg-blue-700 hover:bg-blue-800 text-white'
-          }`}
+          className={`w-full font-bold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105 ${isSubmitting
+            ? 'bg-gray-400 cursor-not-allowed'
+            : 'bg-blue-700 hover:bg-blue-800 text-white'
+            }`}
         >
           {isSubmitting ? (
             <>
