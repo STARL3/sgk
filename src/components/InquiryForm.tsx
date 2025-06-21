@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Send, CheckCircle } from 'lucide-react';
+import { Send, CheckCircle, AlertCircle } from 'lucide-react';
+import { sendInquiryEmail, sendConfirmationEmail } from '../services/emailService';
 
 interface FormData {
   name: string;
@@ -18,7 +19,9 @@ const InquiryForm = () => {
     message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState<Partial<FormData>>({});
+  const [submitError, setSubmitError] = useState<string>('');
 
   const classOptions = [
     'Nursery',
@@ -56,24 +59,38 @@ const InquiryForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      setIsSubmitted(true);
+      setIsSubmitting(true);
+      setSubmitError('');
       
-      // Reset form after 3 seconds
-      setTimeout(() => {
-        setIsSubmitted(false);
-        setFormData({
-          name: '',
-          email: '',
-          phone: '',
-          admissionClass: '',
-          message: ''
-        });
-      }, 3000);
+      try {
+        // Send inquiry email to school
+        await sendInquiryEmail(formData);
+        
+        // Send confirmation email to user
+        await sendConfirmationEmail(formData);
+        
+        setIsSubmitted(true);
+        
+        // Reset form after 3 seconds
+        setTimeout(() => {
+          setIsSubmitted(false);
+          setFormData({
+            name: '',
+            email: '',
+            phone: '',
+            admissionClass: '',
+            message: ''
+          });
+        }, 3000);
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        setSubmitError('Failed to send inquiry. Please try again or contact us directly.');
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   };
 
@@ -101,6 +118,9 @@ const InquiryForm = () => {
         <p className="text-gray-600">
           We've received your inquiry and will get back to you within 24 hours.
         </p>
+        <p className="text-sm text-gray-500 mt-2">
+          A confirmation email has been sent to {formData.email}
+        </p>
       </div>
     );
   }
@@ -108,6 +128,13 @@ const InquiryForm = () => {
   return (
     <div className="bg-white rounded-lg shadow-lg p-8">
       <h3 className="text-2xl font-bold text-gray-900 mb-6">Admission Inquiry</h3>
+      
+      {submitError && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center space-x-2">
+          <AlertCircle className="h-5 w-5 text-red-500" />
+          <p className="text-red-700">{submitError}</p>
+        </div>
+      )}
       
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -212,10 +239,24 @@ const InquiryForm = () => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="w-full bg-blue-700 hover:bg-blue-800 text-white font-bold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105"
+          disabled={isSubmitting}
+          className={`w-full font-bold py-3 px-6 rounded-lg transition-all duration-200 flex items-center justify-center space-x-2 transform hover:scale-105 ${
+            isSubmitting 
+              ? 'bg-gray-400 cursor-not-allowed' 
+              : 'bg-blue-700 hover:bg-blue-800 text-white'
+          }`}
         >
-          <Send className="h-5 w-5" />
-          <span>Submit Inquiry</span>
+          {isSubmitting ? (
+            <>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+              <span>Sending...</span>
+            </>
+          ) : (
+            <>
+              <Send className="h-5 w-5" />
+              <span>Submit Inquiry</span>
+            </>
+          )}
         </button>
       </form>
 

@@ -6,6 +6,7 @@ interface CarouselImage {
   url: string;
   alt: string;
   caption: string;
+  type: 'image' | 'video';
 }
 
 const ImageCarousel = () => {
@@ -33,21 +34,32 @@ const ImageCarousel = () => {
 
   return (
     <div className="relative h-96 md:h-[500px] lg:h-[600px] overflow-hidden rounded-lg">
-      {images.map((image, index) => (
+      {images.map((item, index) => (
         <div
           key={index}
           className={`absolute inset-0 transition-opacity duration-1000 ${
             index === currentIndex ? 'opacity-100' : 'opacity-0'
           }`}
         >
-          <img
-            src={image.url}
-            alt={image.alt}
-            className="w-full h-full object-cover"
-          />
+          {item.type === 'video' ? (
+            <video
+              src={item.url}
+              className="w-full h-full object-cover"
+              autoPlay
+              muted
+              loop
+              playsInline
+            />
+          ) : (
+            <img
+              src={item.url}
+              alt={item.alt}
+              className="w-full h-full object-cover"
+            />
+          )}
           <div className="absolute inset-0 bg-black/30"></div>
           <div className="absolute bottom-8 left-8 text-white">
-            <h3 className="text-2xl md:text-3xl font-bold mb-2">{image.caption}</h3>
+            <h3 className="text-2xl md:text-3xl font-bold mb-2">{item.caption}</h3>
           </div>
         </div>
       ))}
